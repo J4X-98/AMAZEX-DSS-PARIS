@@ -71,9 +71,10 @@ contract Challenge3Test is Test {
         // terminal command to run the speciffic test:                        //
         // forge test --match-contract Challenge3Test -vvvv                   //
         //////////////////////////////////////////////////////////////////////*/
-
-
-
+        
+        //Selfdestruct the pool & CreateDeployer contracts
+        lendingPool.emergencyStop();
+        createDeployer.cleanUp();
     
         //====================================================================//
         vm.stopPrank();
@@ -88,6 +89,10 @@ contract Challenge3Test is Test {
         // terminal command to run the specific test:                 //
         // forge test --match-contract Challenge3Test -vvvv           //
         //////////////////////////////////////////////////////////////*/
+
+        //Redeploy both contracts
+        createDeployer = CreateDeployer(create2Deployer.deploy());
+        LendingHack hack = LendingHack(createDeployer.deploy(false, address(usdc)));
 
 
 

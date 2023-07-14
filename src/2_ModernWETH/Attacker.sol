@@ -19,7 +19,7 @@ contract Attacker
     function attack() public payable {
         require(msg.value == 10 ether, "You need to send 10 ether to start the attack");
 
-        //First we deposti our 10 eth
+        //First we deposit our 10 eth
         weth.deposit{value: 10 ether}();
 
         //Now we abuse the bug 100 times to get all the money out of the contract.
