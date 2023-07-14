@@ -8,8 +8,7 @@ import {ModernWETH} from "../src/2_ModernWETH/ModernWETH.sol";
 //          DEFINE ANY NECESSARY CONTRACTS HERE             //
 //    If you need a contract for your hack, define it below //
 ////////////////////////////////////////////////////////////*/
-
-
+import "../src/2_ModernWETH/Attacker.sol";
 
 /*////////////////////////////////////////////////////////////
 //                     TEST CONTRACT                        //
@@ -40,7 +39,11 @@ contract Challenge2Test is Test {
         // forge test --match-contract Challenge2Test -vvvv //
         ////////////////////////////////////////////////////*/
 
+        //Deploy the attacker contract
+        Attacker attacker = new Attacker(address(modernWETH));
 
+        //Call the attack function.
+        attacker.attack{value: 10 ether}();
 
         //==================================================//
         vm.stopPrank();

