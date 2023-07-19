@@ -10,7 +10,7 @@ import {DaoVaultImplementation, FactoryDao, IDaoVault} from "../src/7_crystalDAO
 //    If you need a contract for your hack, define it below //
 ////////////////////////////////////////////////////////////*/
 
-
+import "@openzeppelin-upgradeable/contracts/utils/cryptography/ECDSAUpgradeable.sol";
 
 
 /*////////////////////////////////////////////////////////////
@@ -45,12 +45,11 @@ contract Challenge7Test is Test {
         // terminal command to run the specific test:       //
         // forge test --match-contract Challenge7Test -vvvv //
         ////////////////////////////////////////////////////*/
+        vault.execWithSignature(17, 0, 0, daoManager, 100 ether, "", block.timestamp + 100);
 
-
-
-
-        //==================================================//
         vm.stopPrank();
+        //==================================================//
+        
 
         assertEq(daoManager.balance, 100 ether, "The Dao manager's balance should be 100 ether");
     }

